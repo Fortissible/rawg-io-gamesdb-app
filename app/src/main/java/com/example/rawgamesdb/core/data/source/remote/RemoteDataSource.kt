@@ -59,7 +59,7 @@ class RemoteDataSource private constructor(
                 else emit(ApiResponse.Empty)
             } catch(e:Exception){
                 emit(ApiResponse.Error(e.toString()))
-                Log.e("Remote Data Source", "loginReqresApi: $e", )
+                Log.e("Remote Data Source", "loginReqresApi: $e")
             }
         }.flowOn(Dispatchers.IO)
     }

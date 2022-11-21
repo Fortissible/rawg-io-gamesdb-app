@@ -1,8 +1,10 @@
 package com.example.rawgamesdb.core.utils
 
 import com.example.rawgamesdb.core.data.source.local.entity.GameEntity
+import com.example.rawgamesdb.core.data.source.remote.response.LoginResponse
 import com.example.rawgamesdb.core.data.source.remote.response.ResultsItem
 import com.example.rawgamesdb.core.domain.model.Game
+import com.example.rawgamesdb.core.domain.model.LoginToken
 
 object DataMapper {
     fun mapGameResponseToEntities(gameResponse: List<ResultsItem>): List<GameEntity> {
@@ -69,5 +71,10 @@ object DataMapper {
             slug = game.slug,
             released = game.released,
             favorite = game.favorite
+        )
+
+    fun mapLoginResponseToDomain(response:LoginResponse):LoginToken =
+        LoginToken(
+            token = response.token
         )
 }
