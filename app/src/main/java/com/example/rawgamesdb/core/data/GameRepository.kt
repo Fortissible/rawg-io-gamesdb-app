@@ -27,12 +27,10 @@ class GameRepository private constructor(
             }
     }
 
-    override fun getAllGame(key: String): Flow<Resource<List<Game>>> =
+    override fun getAllGameFromApi(key: String): Flow<Resource<List<Game>>> =
         object : NetworkBoundResource<List<Game>,List<ResultsItem>>(){
-            override fun loadFromDB(): Flow<List<Game>> {
-                return localSource.getAllGame().map {
-                    DataMapper.mapGamesEntitiesToDomain(it)
-                }
+            override fun loadFromPrefs(): Flow<List<Game>> {
+                TODO("Not yet implemented")
             }
 
             override fun shouldFetch(data: List<Game>?): Boolean = true
@@ -40,28 +38,11 @@ class GameRepository private constructor(
             override suspend fun createCall(): Flow<ApiResponse<List<ResultsItem>>> =
                 remoteSource.getAllGameFromApi(key = key)
 
-            override fun loadFromSharedPrefs(): Flow<List<Game>> {
-                TODO("Not yet implemented")
-            }
-
         }.asFlow()
 
-    override fun getAllFavouritedGame(): Flow<List<Game>> =
-        localSource.getAllFavouritedGame().map { DataMapper.mapGamesEntitiesToDomain(it) }
-
-    override fun setFavourite(game: Game, isFavourite: Boolean) {
-        val gameEntity = DataMapper.mapGameDomainToEntities(game)
-        localSource.updateFavouriteGame(gameEntity,isFavourite)
-    }
-
-    override suspend fun insertFavourite(game: Game) {
-        val gameEntity = DataMapper.mapGameDomainToEntities(game)
-        localSource.insertFavouriteGame(gameEntity)
-    }
-
-    override fun getGameDetail(id: String, key: String): Flow<Resource<Game>> =
+    override fun getGameDetailFromApi(id: String, key: String): Flow<Resource<Game>> =
         object : NetworkBoundResource<Game,GameDetailResponse>(){
-            override fun loadFromDB(): Flow<Game> {
+            override fun loadFromPrefs(): Flow<Game> {
                 TODO("Not yet implemented")
             }
 
@@ -70,9 +51,18 @@ class GameRepository private constructor(
             override suspend fun createCall(): Flow<ApiResponse<GameDetailResponse>> =
                 remoteSource.getGameDetailFromApi(id,key)
 
-            override fun loadFromSharedPrefs(): Flow<Game> {
-                TODO("Not yet implemented")
-            }
         }.asFlow()
 
+    override fun getAllFavouritedGame(): Flow<List<Game>> =
+        localSource.getAllFavouritedGame().map { DataMapper.mapGamesEntitiesToDomain(it) }
+
+    override fun deleteFavouriteGame(game: Game) {
+        val gameEntity = DataMapper.mapGameDomainToEntities(game)
+        localSource.deleteFavouriteGame(gameEntity)
+    }
+
+    override suspend fun insertFavourite(game: Game) {
+        val gameEntity = DataMapper.mapGameDomainToEntities(game)
+        localSource.insertFavouriteGame(gameEntity)
+    }
 }

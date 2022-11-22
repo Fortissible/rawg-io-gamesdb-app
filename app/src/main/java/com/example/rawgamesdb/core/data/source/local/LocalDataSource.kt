@@ -4,7 +4,9 @@ import android.content.Context
 import com.example.rawgamesdb.core.data.source.local.entity.GameEntity
 import com.example.rawgamesdb.core.data.source.local.room.GameDao
 import com.example.rawgamesdb.core.data.source.local.sharedpreferences.LoginPreference
+import com.example.rawgamesdb.core.domain.model.LoginToken
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class LocalDataSource private constructor(
     private val gameDao: GameDao,
@@ -22,13 +24,10 @@ class LocalDataSource private constructor(
 
     }
 
-    fun getAllGame(): Flow<List<GameEntity>> = gameDao.getAllGame()
-
     fun getAllFavouritedGame(): Flow<List<GameEntity>> = gameDao.getAllFavouritedGame()
 
-    fun updateFavouriteGame(game: GameEntity, isFavourite: Boolean) {
-        game.favorite = isFavourite
-        gameDao.updateFavouriteGame(game)
+    fun deleteFavouriteGame(game: GameEntity) {
+        gameDao.deleteFavouriteGame(game)
     }
 
     suspend fun insertFavouriteGame(game: GameEntity){
@@ -38,7 +37,9 @@ class LocalDataSource private constructor(
 
     fun setLoginToken(token:String) = prefs.setLoginToken(token)
 
-    fun getLoginToken():String? = prefs.getLoginToken()
+    fun getLoginToken():Flow<LoginToken> = flow{
+        emit(LoginToken(token = prefs.getLoginToken()))
+    }
 
     fun clearLoginToken() = prefs.clearLoginToken()
 }
