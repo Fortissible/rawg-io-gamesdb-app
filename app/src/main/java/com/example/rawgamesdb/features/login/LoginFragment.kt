@@ -36,10 +36,13 @@ class LoginFragment : Fragment() {
         binding.emailEdt.setText(Constant.emailUser)
         binding.passwordEdt.setText(Constant.passwordUser)
 
-        loginUser(view,false)
+        loginViewModel.getToken.observe(viewLifecycleOwner){
+            if (!it.token.isNullOrEmpty())
+                loginUser(view)
+        }
 
         binding.signinBtn.setOnClickListener {
-            loginUser(view,true)
+            loginUser(view)
         }
     }
 
@@ -48,11 +51,11 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    private fun loginUser(view:View, isButtonClicked:Boolean){
+    private fun loginUser(view:View){
         loginViewModel.loginRAWGame(
             binding.emailEdt.text.toString(),
             binding.passwordEdt.text.toString(),
-            isButtonClicked
+            binding.rememberMeCb.isChecked
         ).observe(requireActivity()){
             if (it != null) {
                 when (it) {
@@ -61,16 +64,9 @@ class LoginFragment : Fragment() {
                     }
                     is Resource.Success -> {
                         hideLoading()
-                        if (it.data?.token.isNullOrEmpty()) {
-                            Toast.makeText(
-                                requireActivity(),
-                                "Failed to login!",
-                                Toast.LENGTH_SHORT).show()
-                        } else {
-                            view.findNavController().navigate(
-                                R.id.action_loginFragment_to_homeFragment
-                            )
-                        }
+                        view.findNavController().navigate(
+                            R.id.action_loginFragment_to_homeFragment
+                        )
                     }
                     is Resource.Error -> {
                         hideLoading()

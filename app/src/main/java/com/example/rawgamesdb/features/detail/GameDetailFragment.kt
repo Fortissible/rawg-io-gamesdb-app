@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +17,7 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.rawgamesdb.R
 import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.GameDetail
+import com.example.rawgamesdb.core.domain.model.Game
 import com.example.rawgamesdb.core.ui.ViewModelFactory
 import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentGameDetailBinding
@@ -47,33 +49,45 @@ class GameDetailFragment : Fragment() {
 
         val gameId = arguments?.getInt(HomeFragment.EXTRA_ID) ?: 0
 
-        gameDetailViewModel.getGameDetailFromApi(gameId.toString(),Constant.tokenRAWGamesApi)
+        gameDetailViewModel.getGameDetail(gameId.toString(),Constant.tokenRAWGamesApi)
             .observe(viewLifecycleOwner){
                 if ( it!= null) {
                     when (it) {
                         is Resource.Loading -> {
                             Log.d("LOADING DETAIL GAN", "onViewCreated: ")
-                            binding.contentContainer.visibility = View.INVISIBLE
-                            binding.loadingDetail.visibility = View.VISIBLE
-                            binding.yourGameIsLoadingTv.visibility = View.VISIBLE
+                            changeUI(isLoading = true, isFavourited = false)
                         }
                         is Resource.Success -> {
                             Log.d("SUKSES DETAIL GAN", "onViewCreated: ${it.data}")
-                            binding.loadingDetail.visibility = View.GONE
-                            binding.yourGameIsLoadingTv.visibility = View.GONE
-                            binding.contentContainer.visibility = View.VISIBLE
+
                             setGameDetail(it.data)
-                            binding.wishlistBtn.setOnClickListener { view ->
-                                lifecycleScope.launch {
-                                    gameDetailViewModel.updateFavouriteGame(it.data!!,it.data.favorite)
+                            if (it.data?.favorite == true) {
+                                changeUI(isLoading = false, isFavourited = true)
+                                binding.wishlistBtn.setOnClickListener { view ->
+                                    val gameDeletedText =
+                                        StringBuilder(
+                                            "Deleted ${it.data.name} from favourite list")
+                                            .toString()
+                                    clickAction(
+                                        view,gameDeletedText,it.data
+                                    )
                                 }
-                                view.findNavController().navigate(R.id.action_gameDetailFragment_to_myFavGamesFragment)
+
+                            } else {
+                                changeUI(isLoading = false, isFavourited = false)
+                                binding.wishlistBtn.setOnClickListener { view ->
+                                    val gameAddedText =
+                                        StringBuilder(
+                                            "Added ${it.data!!.name} to favourite list")
+                                            .toString()
+                                    clickAction(
+                                        view,gameAddedText,it.data
+                                    )
+                                }
                             }
                         }
                         is Resource.Error -> {
-                            binding.contentContainer.visibility = View.INVISIBLE
-                            binding.loadingDetail.visibility = View.GONE
-                            binding.yourGameIsLoadingTv.visibility = View.GONE
+                            changeUI(isLoading = false, isFavourited = false)
                             Log.d("ERROR DETAIL GAN", "onViewCreated: ")
                         }
                     }
@@ -81,8 +95,39 @@ class GameDetailFragment : Fragment() {
         }
     }
 
+    private fun changeUI(isLoading:Boolean,isFavourited:Boolean){
+        if (isLoading) {
+            binding.loadingDetail.visibility = View.VISIBLE
+            binding.yourGameIsLoadingTv.visibility = View.VISIBLE
+            binding.contentContainer.visibility = View.INVISIBLE
+        } else {
+            binding.loadingDetail.visibility = View.GONE
+            binding.yourGameIsLoadingTv.visibility = View.GONE
+            binding.contentContainer.visibility = View.VISIBLE
+            if (isFavourited) {
+                binding.wishlistBtn.text = StringBuilder("Delete from wishlist")
+                    .toString()
+                binding.wishlistBtn.backgroundTintList =
+                    AppCompatResources.getColorStateList(
+                        requireActivity(),R.color.steam_text_primary
+                    )
+            }
+        }
+    }
+
+    private fun clickAction(view:View,text:String,game: Game){
+        lifecycleScope.launch {
+            gameDetailViewModel.updateFavouriteGame(game,game.favorite)
+        }
+        Toast.makeText(
+            requireActivity(),
+            text,
+            Toast.LENGTH_SHORT).show()
+        view.findNavController().navigate(R.id.action_gameDetailFragment_to_homeFragment)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setGameDetail(game: GameDetail?){
+    private fun setGameDetail(game: Game?){
         if (game?.id != null){
             val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
             val formattedDate = LocalDate.parse(game.released).format(formatter)

@@ -2,9 +2,10 @@ package com.example.rawgamesdb.features.favourite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.domain.model.GameDetail
 import com.example.rawgamesdb.core.domain.usecase.GameUseCase
+import kotlinx.coroutines.launch
 
 class MyFavGamesViewModel(
     private val gameUseCase: GameUseCase
@@ -12,8 +13,10 @@ class MyFavGamesViewModel(
 
     val allFavouritedGame = gameUseCase.getAllFavouritedGame().asLiveData()
 
-    suspend fun updateFavouriteGame(game: GameDetail, isFavourited:Boolean){
-        if (isFavourited) gameUseCase.deleteFavouriteGame(game)
-        else gameUseCase.insertFavourite(game)
+    fun updateFavouriteGame(game: Game, isFavourited:Boolean){
+        viewModelScope.launch {
+            if (isFavourited) gameUseCase.deleteFavouriteGame(game)
+            else gameUseCase.insertFavourite(game)
+        }
     }
 }

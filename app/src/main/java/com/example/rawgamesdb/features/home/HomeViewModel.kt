@@ -23,6 +23,8 @@ class HomeViewModel (
 //        else gameUseCase.insertFavourite(game)
 //    }
 
-    val logout = loginUseCase.logoutAccount().asLiveData()
+    val logout = loginUseCase.logoutAccount()
+
+    val getToken = loginUseCase.getLoginToken().asLiveData()
 
 }

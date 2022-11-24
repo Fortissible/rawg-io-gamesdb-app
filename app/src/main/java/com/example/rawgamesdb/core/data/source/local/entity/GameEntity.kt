@@ -53,5 +53,8 @@ data class GameEntity (
     val released: String,
 
     @ColumnInfo(name = "favorite")
-    var favorite: Boolean
+    var favorite: Boolean,
+
+    @ColumnInfo(name = "description")
+    val description: String?
 )

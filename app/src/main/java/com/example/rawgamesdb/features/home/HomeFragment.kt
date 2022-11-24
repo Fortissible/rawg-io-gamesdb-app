@@ -39,6 +39,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        homeViewModel.getToken.observe(viewLifecycleOwner){
+            if (it.token.isNullOrEmpty())
+                view.findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+        }
+
         binding.gamesRv.setHasFixedSize(true)
 
         binding.gotoFavActionBtn.setOnClickListener {
@@ -47,7 +52,7 @@ class HomeFragment : Fragment() {
 
         binding.logoutBtn.setOnClickListener {
             homeViewModel.logout
-            view.findNavController().popBackStack(R.id.action_homeFragment_to_loginFragment,false)
+            view.findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
         }
 
         homeViewModel.getAllGameFromApi(Constant.tokenRAWGamesApi).observe(viewLifecycleOwner){

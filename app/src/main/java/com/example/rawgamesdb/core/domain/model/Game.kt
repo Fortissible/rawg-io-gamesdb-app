@@ -20,5 +20,6 @@ data class Game(
     val updated: String?,
     val slug: String?,
     val released: String?,
-    var favorite: Boolean
+    var favorite: Boolean,
+    val description: String?
 ):Parcelable

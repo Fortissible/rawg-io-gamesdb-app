@@ -42,7 +42,8 @@ class RemoteDataSource private constructor(
         return flow {
             try {
                 val gameDetailResponse = apiService.getGameDetailFromApi(id,key)
-                emit(ApiResponse.Success(gameDetailResponse))
+                if (gameDetailResponse.name.isNotEmpty()) emit(ApiResponse.Success(gameDetailResponse))
+                else emit(ApiResponse.Empty)
             } catch(e:Exception){
                 emit(ApiResponse.Error(e.toString()))
                 Log.e("Remote Data Source", "getGameDetailFromApi: $e")
@@ -55,8 +56,10 @@ class RemoteDataSource private constructor(
             try {
                 val loginResponse = apiService.login(email,password)
                 Log.d("RESPONSEEE", "loginReqresApi: ${loginResponse.token}")
-                if (loginResponse.token.isNotEmpty()) emit(ApiResponse.Success(loginResponse))
-                else emit(ApiResponse.Empty)
+                if (loginResponse.token.isNotEmpty())
+                    emit(ApiResponse.Success(loginResponse))
+                else
+                    emit(ApiResponse.Empty)
             } catch(e:Exception){
                 emit(ApiResponse.Error(e.toString()))
                 Log.e("Remote Data Source", "loginReqresApi: $e")

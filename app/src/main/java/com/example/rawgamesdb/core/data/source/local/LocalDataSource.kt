@@ -26,7 +26,7 @@ class LocalDataSource private constructor(
 
     fun getAllFavouritedGame(): Flow<List<GameEntity>> = gameDao.getAllFavouritedGame()
 
-    fun deleteFavouriteGame(game: GameEntity) {
+    suspend fun deleteFavouriteGame(game: GameEntity) {
         gameDao.deleteFavouriteGame(game)
     }
 
@@ -34,6 +34,8 @@ class LocalDataSource private constructor(
         game.favorite = true
         gameDao.insertFavouriteGame(game)
     }
+
+    fun getFavouritedGame(id:Int) = gameDao.getFavouritedGame(id)
 
     fun setLoginToken(token:String) = prefs.setLoginToken(token)
 

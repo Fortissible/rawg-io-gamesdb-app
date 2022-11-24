@@ -1,6 +1,7 @@
 package com.example.rawgamesdb.core.data.source.local.sharedpreferences
 
 import android.content.Context
+import android.util.Log
 
 internal class LoginPreference(context:Context) {
     private val preferences = context.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
@@ -12,14 +13,15 @@ internal class LoginPreference(context:Context) {
     }
 
     fun getLoginToken():String?{
+        Log.d("GETTING TOKEN", "getLoginToken: ")
         return preferences.getString(LOGIN_TOKEN,"")
     }
 
-    fun clearLoginToken():Boolean{
+    fun clearLoginToken(){
         val editor = preferences.edit()
         editor.clear()
         editor.apply()
-        return true
+        Log.d("CLEAREDDDD", "clearLoginToken: TOKEN NOW ${preferences.getString(LOGIN_TOKEN,"")}")
     }
 
     companion object {

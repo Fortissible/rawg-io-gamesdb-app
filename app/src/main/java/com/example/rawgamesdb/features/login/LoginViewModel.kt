@@ -11,8 +11,10 @@ class LoginViewModel (
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    val loginRAWGame:(email:String,password:String,isClicked:Boolean)
-    -> LiveData<Resource<LoginToken>> = { email,password,isClicked ->
-        loginUseCase.loginAccount(email,password,isClicked).asLiveData()
+    val loginRAWGame:(email:String,password:String,isRemembered:Boolean)
+    -> LiveData<Resource<LoginToken>> = { email,password,isRemembered ->
+        loginUseCase.loginAccount(email,password,isRemembered).asLiveData()
     }
+
+    val getToken = loginUseCase.getLoginToken().asLiveData()
 }
