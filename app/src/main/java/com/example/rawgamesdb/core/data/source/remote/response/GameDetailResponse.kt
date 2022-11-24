@@ -14,7 +14,7 @@ data class GameDetailResponse(
 	val metacritic: Int,
 
 	@field:SerializedName("rating")
-	val rating: Int,
+	val rating: Double,
 
 	@field:SerializedName("description")
 	val description: String,
@@ -34,12 +34,6 @@ data class GameDetailResponse(
 	@field:SerializedName("parents_count")
 	val parentsCount: Int,
 
-	@field:SerializedName("platforms")
-	val platforms: List<PlatformsItemDetail>,
-
-	@field:SerializedName("metacritic_platforms")
-	val metacriticPlatforms: List<MetacriticPlatformsItem>,
-
 	@field:SerializedName("creators_count")
 	val creatorsCount: Int,
 
@@ -49,17 +43,11 @@ data class GameDetailResponse(
 	@field:SerializedName("reviews_text_count")
 	val reviewsTextCount: String,
 
-	@field:SerializedName("ratings")
-	val ratings: RatingsDetail,
-
 	@field:SerializedName("achievements_count")
 	val achievementsCount: Int,
 
 	@field:SerializedName("id")
 	val id: Int,
-
-	@field:SerializedName("added_by_status")
-	val addedByStatus: AddedByStatusDetail,
 
 	@field:SerializedName("reddit_url")
 	val redditUrl: String,
@@ -109,9 +97,6 @@ data class GameDetailResponse(
 	@field:SerializedName("tba")
 	val tba: Boolean,
 
-	@field:SerializedName("esrb_rating")
-	val esrbRating: EsrbRatingDetail,
-
 	@field:SerializedName("screenshots_count")
 	val screenshotsCount: Int,
 
@@ -121,78 +106,9 @@ data class GameDetailResponse(
 	@field:SerializedName("reddit_description")
 	val redditDescription: String,
 
-	@field:SerializedName("reactions")
-	val reactions: Reactions,
-
 	@field:SerializedName("reddit_logo")
 	val redditLogo: String,
 
 	@field:SerializedName("updated")
 	val updated: String
-)
-
-data class RequirementsDetail(
-
-	@field:SerializedName("minimum")
-	val minimum: String,
-
-	@field:SerializedName("recommended")
-	val recommended: String
-)
-
-data class MetacriticPlatformsItem(
-
-	@field:SerializedName("metascore")
-	val metascore: Int,
-
-	@field:SerializedName("url")
-	val url: String
-)
-
-data class PlatformDetail(
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("slug")
-	val slug: String
-)
-
-data class Reactions(
-	val any: Any? = null
-)
-
-data class PlatformsItemDetail(
-
-	@field:SerializedName("requirements")
-	val requirements: RequirementsDetail,
-
-	@field:SerializedName("released_at")
-	val releasedAt: String,
-
-	@field:SerializedName("platform")
-	val platform: PlatformDetail
-)
-
-data class AddedByStatusDetail(
-	val any: Any? = null
-)
-
-data class RatingsDetail(
-	val any: Any? = null
-)
-
-data class EsrbRatingDetail(
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("slug")
-	val slug: String
 )

@@ -14,23 +14,15 @@ class HomeViewModel (
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    private val _games = MutableLiveData<Resource<List<Game>>>()
-    val games : LiveData<Resource<List<Game>>> = _games
-
-    private val _isLogout = MutableLiveData<Boolean>()
-    val isLogout : LiveData<Boolean> = _isLogout
-
-    fun getAllGameFromApi(key:String) {
-        _games.value = gameUseCase.getAllGameFromApi(key).asLiveData().value
+    val getAllGameFromApi:(key:String) -> LiveData<Resource<List<Game>>> = { key ->
+        gameUseCase.getAllGameFromApi(key).asLiveData()
     }
 
-    suspend fun updateFavouriteGame(game:Game,isFavourited:Boolean){
-        if (isFavourited) gameUseCase.deleteFavouriteGame(game)
-        else gameUseCase.insertFavourite(game)
-    }
+//    suspend fun updateFavouriteGame(game:Game,isFavourited:Boolean){
+//        if (isFavourited) gameUseCase.deleteFavouriteGame(game)
+//        else gameUseCase.insertFavourite(game)
+//    }
 
-    fun logout(){
-        _isLogout.value = loginUseCase.logoutAccount().asLiveData().value
-    }
+    val logout = loginUseCase.logoutAccount().asLiveData()
 
 }

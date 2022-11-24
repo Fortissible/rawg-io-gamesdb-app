@@ -17,7 +17,7 @@ data class GameEntity (
     val suggestionsCount: Int,
 
     @ColumnInfo(name = "rating")
-    val rating: Int,
+    val rating: Double,
 
     @ColumnInfo(name = "metacritic")
     val metacritic: Int,

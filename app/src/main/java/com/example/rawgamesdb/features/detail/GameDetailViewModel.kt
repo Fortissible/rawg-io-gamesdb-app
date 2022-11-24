@@ -6,20 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.rawgamesdb.core.data.Resource
 import com.example.rawgamesdb.core.domain.model.Game
+import com.example.rawgamesdb.core.domain.model.GameDetail
 import com.example.rawgamesdb.core.domain.usecase.GameUseCase
 
 class GameDetailViewModel (
     private val gameUseCase: GameUseCase
 ): ViewModel() {
 
-    private val _gameDetail = MutableLiveData<Resource<Game>>()
-    val gameDetail : LiveData<Resource<Game>> = _gameDetail
-
-    fun getGameDetailFromApi(id:String, key:String) {
-        _gameDetail.value = gameUseCase.getGameDetailFromApi(id,key).asLiveData().value
+    val getGameDetailFromApi : (id:String, key:String)
+    -> LiveData<Resource<GameDetail>> = { id,key ->
+       gameUseCase.getGameDetailFromApi(id,key).asLiveData()
     }
 
-    suspend fun updateFavouriteGame(game:Game,isFavourited:Boolean){
+    suspend fun updateFavouriteGame(game:GameDetail,isFavourited:Boolean){
         if (isFavourited) gameUseCase.deleteFavouriteGame(game)
         else gameUseCase.insertFavourite(game)
     }

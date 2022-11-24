@@ -7,7 +7,8 @@
     android:background="@color/steam_dark_primary"
     tools:context=".features.home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,16 +19,22 @@
         app:layout_constraintBottom_toTopOf="@id/content_container">
 
         <SearchView
+            android:id="@+id/search_game"
+            android:layout_marginEnd="60dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded"
-            android:queryHint="Search a game..."
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/logout_btn"
+            android:layout_marginStart="-60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00000000"
+            android:src="@drawable/ic_baseline_logout_24"/>
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/content_container"
@@ -46,17 +53,46 @@
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             tools:listitem="@layout/games_item"
-            android:layout_gravity="top"/>
+            android:layout_gravity="top"
+            android:paddingBottom="24dp"/>
 
     </ScrollView>
 
+    <TextView
+        android:id="@+id/your_game_is_loading_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/steam_text_primary"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="Loading\nGames from API"
+        android:textAlignment="center"
+        android:layout_marginTop="-32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        />
+
+    <ProgressBar
+        android:id="@+id/loading_game_list"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminateTint="@color/steam_text_primary"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/your_game_is_loading_tv"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/test_fab"
+        android:id="@+id/goto_fav_action_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="24dp"
-        />
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_baseline_favorite_24"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

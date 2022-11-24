@@ -1,10 +1,6 @@
 package com.example.rawgamesdb.core.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class Game(
+data class GameDetail(
     val added: Int?,
     val suggestionsCount: Int?,
     val rating: Double?,
@@ -20,5 +16,6 @@ data class Game(
     val updated: String?,
     val slug: String?,
     val released: String?,
+    val description: String?,
     var favorite: Boolean
-):Parcelable
+)

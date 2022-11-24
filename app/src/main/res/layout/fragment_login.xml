@@ -97,10 +97,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_edt"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
                     android:background="@color/steam_text_primary"
-                    app:hintTextAppearance="@style/TextHint"
-                    android:hint="Username..."
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -126,10 +125,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_edt"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
                     android:background="@color/steam_text_primary"
-                    app:hintTextAppearance="@style/TextHint"
-                    android:hint="Password..."
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -168,6 +166,13 @@
                 android:text="Sign in"
                 android:layout_gravity="center"
                 />
+
+            <ProgressBar
+                android:id="@+id/loading_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

@@ -12,6 +12,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
             emit(Resource.Loading())
             when (val apiResponse = createCall().first()) {
                 is ApiResponse.Success -> {
+                    saveCallResult(apiResponse.data)
                     emitAll(loadFromPrefs().map { Resource.Success(it) })
                 }
                 is ApiResponse.Empty -> {
@@ -32,6 +33,8 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     protected abstract fun loadFromPrefs(): Flow<ResultType>
 
     protected abstract fun shouldFetch(data: ResultType?): Boolean
+
+    protected abstract suspend fun saveCallResult(data: RequestType)
 
     protected abstract suspend fun createCall(): Flow<ApiResponse<RequestType>>
 

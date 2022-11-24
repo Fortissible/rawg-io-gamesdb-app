@@ -8,7 +8,6 @@ import com.example.rawgamesdb.core.domain.model.LoginToken
 import kotlinx.coroutines.flow.Flow
 
 interface ILoginRepository {
-    fun loginAccount(email:String,password:String): Flow<Resource<LoginToken>>
+    fun loginAccount(email:String,password:String,isClicked:Boolean): Flow<Resource<LoginToken>>
     fun logoutAccount(): Flow<Boolean>
-    fun setLoginToken(response:ApiResponse<LoginResponse>)
 }

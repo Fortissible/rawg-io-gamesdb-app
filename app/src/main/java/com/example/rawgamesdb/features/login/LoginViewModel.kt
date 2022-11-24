@@ -1,7 +1,6 @@
 package com.example.rawgamesdb.features.login
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.rawgamesdb.core.data.Resource
@@ -12,10 +11,8 @@ class LoginViewModel (
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    private val _tokenLogin = MutableLiveData<Resource<LoginToken>>()
-    val tokenLogin : LiveData<Resource<LoginToken>> = _tokenLogin
-
-    fun loginRAWGame(email:String,password:String) {
-        _tokenLogin.value = loginUseCase.loginAccount(email,password).asLiveData().value
+    val loginRAWGame:(email:String,password:String,isClicked:Boolean)
+    -> LiveData<Resource<LoginToken>> = { email,password,isClicked ->
+        loginUseCase.loginAccount(email,password,isClicked).asLiveData()
     }
 }

@@ -1,6 +1,7 @@
 package com.example.rawgamesdb.core.domain.usecase
 
 import com.example.rawgamesdb.core.domain.model.Game
+import com.example.rawgamesdb.core.domain.model.GameDetail
 import com.example.rawgamesdb.core.domain.repository.IGameRepository
 
 class GameInteractor (private val gameRepository: IGameRepository):GameUseCase {
@@ -11,9 +12,9 @@ class GameInteractor (private val gameRepository: IGameRepository):GameUseCase {
 
     override fun getAllFavouritedGame() = gameRepository.getAllFavouritedGame()
 
-    override fun deleteFavouriteGame(game: Game) =
+    override fun deleteFavouriteGame(game: GameDetail) =
         gameRepository.deleteFavouriteGame(game)
 
-    override suspend fun insertFavourite(game: Game) =
+    override suspend fun insertFavourite(game: GameDetail) =
         gameRepository.insertFavourite(game)
 }

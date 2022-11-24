@@ -5,11 +5,12 @@ import com.example.rawgamesdb.core.data.source.remote.response.GameDetailRespons
 import com.example.rawgamesdb.core.data.source.remote.response.LoginResponse
 import com.example.rawgamesdb.core.data.source.remote.response.ResultsItem
 import com.example.rawgamesdb.core.domain.model.Game
+import com.example.rawgamesdb.core.domain.model.GameDetail
 import com.example.rawgamesdb.core.domain.model.LoginToken
 
 object DataMapper {
-    fun mapGameDetailResponseToDomain(gameDetailResponse: GameDetailResponse):Game {
-        return Game(
+    fun mapGameDetailResponseToDomain(gameDetailResponse: GameDetailResponse):GameDetail {
+        return GameDetail(
             added = gameDetailResponse.added,
             suggestionsCount = gameDetailResponse.suggestionsCount,
             rating = gameDetailResponse.rating,
@@ -25,8 +26,35 @@ object DataMapper {
             updated = gameDetailResponse.updated,
             slug = gameDetailResponse.slug,
             released = gameDetailResponse.released,
+            description = gameDetailResponse.description,
             favorite = false
         )
+    }
+
+    fun mapGameResponseToDomain(gameResponse: List<ResultsItem>):List<Game> {
+        val gameList = ArrayList<Game>()
+        gameResponse.map {
+            val game = Game(
+                added = it.added,
+                suggestionsCount = it.suggestionsCount,
+                rating = it.rating,
+                metacritic = it.metacritic,
+                playtime = it.playtime,
+                backgroundImage = it.backgroundImage,
+                tba = it.tba,
+                ratingTop = it.ratingTop,
+                reviewsTextCount = it.reviewsTextCount,
+                name = it.name,
+                id = it.id,
+                ratingsCount = it.ratingsCount,
+                updated = it.updated,
+                slug = it.slug,
+                released = it.released,
+                favorite = false
+            )
+            gameList.add(game)
+        }
+        return gameList
     }
 
     fun mapGamesEntitiesToDomain(games:List<GameEntity>): List<Game> = games.map { game ->
@@ -50,27 +78,42 @@ object DataMapper {
         )
     }
 
-    fun mapGameDomainToEntities(game:Game): GameEntity = GameEntity(
-            added = game.added,
-            suggestionsCount = game.suggestionsCount,
-            rating = game.rating,
-            metacritic = game.metacritic,
-            playtime = game.playtime,
-            backgroundImage = game.backgroundImage,
-            tba = game.tba,
-            ratingTop = game.ratingTop,
-            reviewsTextCount = game.reviewsTextCount,
-            name = game.name,
-            id = game.id,
-            ratingsCount = game.ratingsCount,
-            updated = game.updated,
-            slug = game.slug,
-            released = game.released,
+    fun mapGameDetailDomainToEntities(game:GameDetail): GameEntity = GameEntity(
+            added = game.added!!,
+            suggestionsCount = game.suggestionsCount!!,
+            rating = game.rating!!,
+            metacritic = game.metacritic!!,
+            playtime = game.playtime!!,
+            backgroundImage = game.backgroundImage!!,
+            tba = game.tba!!,
+            ratingTop = game.ratingTop!!,
+            reviewsTextCount = game.reviewsTextCount!!,
+            name = game.name!!,
+            id = game.id!!,
+            ratingsCount = game.ratingsCount!!,
+            updated = game.updated!!,
+            slug = game.slug!!,
+            released = game.released!!,
             favorite = game.favorite
         )
 
-    fun mapLoginResponseToDomain(response:LoginResponse):LoginToken =
-        LoginToken(
-            token = response.token
-        )
+    fun getGameDetailEmpty():GameDetail = GameDetail(
+        added = null,
+        suggestionsCount = null,
+        rating = null,
+        metacritic = null,
+        playtime = null,
+        backgroundImage = null,
+        tba = null,
+        ratingTop = null,
+        reviewsTextCount = null,
+        name = null,
+        id = null,
+        ratingsCount = null,
+        updated = null,
+        slug = null,
+        released = null,
+        description = null,
+        favorite = false
+    )
 }
