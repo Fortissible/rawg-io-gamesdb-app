@@ -1,9 +1,7 @@
 package com.example.core.domain.usecase
 
-import com.example.core.data.Resource
 import com.example.core.domain.model.Game
 import com.example.core.domain.repository.IGameRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 

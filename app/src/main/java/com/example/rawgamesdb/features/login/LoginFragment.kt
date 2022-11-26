@@ -1,7 +1,6 @@
 package com.example.rawgamesdb.features.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,6 @@ class LoginFragment : Fragment() {
         binding.passwordEdt.setText(Constant.passwordUser)
 
         loginViewModel.getToken.observe(viewLifecycleOwner){
-            Log.d("TOKEN NOW", "onViewCreated: ${it.token}")
             if (!it.token.isNullOrEmpty())
                 loginUser(view)
         }

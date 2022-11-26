@@ -34,28 +34,6 @@ object DataMapper {
         return gameList
     }
 
-    fun mapGameDetailResponseToEntities(gameDetailResponse: GameDetailResponse): GameEntity {
-        return GameEntity(
-            added = gameDetailResponse.added,
-            suggestionsCount = gameDetailResponse.suggestionsCount,
-            rating = gameDetailResponse.rating,
-            metacritic = gameDetailResponse.metacritic,
-            playtime = gameDetailResponse.playtime,
-            backgroundImage = gameDetailResponse.backgroundImage,
-            tba = gameDetailResponse.tba,
-            ratingTop = gameDetailResponse.ratingTop,
-            reviewsTextCount = gameDetailResponse.reviewsTextCount,
-            name = gameDetailResponse.name,
-            id = gameDetailResponse.id,
-            ratingsCount = gameDetailResponse.ratingsCount,
-            updated = gameDetailResponse.updated,
-            slug = gameDetailResponse.slug,
-            released = gameDetailResponse.released,
-            description = gameDetailResponse.description,
-            favorite = false
-        )
-    }
-
     fun mapGamesEntitiesToDomain(games:List<GameEntity>): List<Game> = games.map { game ->
         Game(
             added = game.added,
@@ -137,25 +115,5 @@ object DataMapper {
         released = gameResponse.released,
         favorite = false,
         description = gameResponse.description
-    )
-
-    fun getGameDetailEmpty():Game = Game(
-        added = null,
-        suggestionsCount = null,
-        rating = null,
-        metacritic = null,
-        playtime = null,
-        backgroundImage = null,
-        tba = null,
-        ratingTop = null,
-        reviewsTextCount = null,
-        name = null,
-        id = null,
-        ratingsCount = null,
-        updated = null,
-        slug = null,
-        released = null,
-        description = null,
-        favorite = false
     )
 }

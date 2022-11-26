@@ -1,6 +1,5 @@
 package com.example.core.data
 
-import android.util.Log
 import com.example.core.data.source.local.LocalDataSource
 import com.example.core.data.source.remote.RemoteDataSource
 import com.example.core.data.source.remote.network.ApiResponse
@@ -25,7 +24,6 @@ class GameRepository @Inject constructor(
         emit(Resource.Loading())
         when (val response = remoteSource.getAllGameFromApi(key = key).first()){
             is ApiResponse.Empty -> {
-                Log.d("KOSONG GAN", "onViewCreated: ")
                 emit(Resource.Success(ArrayList()))
             }
             is ApiResponse.Success -> {
@@ -33,7 +31,6 @@ class GameRepository @Inject constructor(
                 emit(Resource.Success(gameList))
             }
             is ApiResponse.Error -> {
-                Log.d("ERROR GAN", "onViewCreated: ")
                 emit(Resource.Error(response.errorMessage))
             }
         }
@@ -56,7 +53,6 @@ class GameRepository @Inject constructor(
                 remoteSource.getGameDetailFromApi(id,key)
 
             override suspend fun saveCallResult(data: GameDetailResponse) {
-                Log.d("NOT SAVING", "saveCallResult: ")
             }
 
             override fun loadFromApi(data: GameDetailResponse): Game =

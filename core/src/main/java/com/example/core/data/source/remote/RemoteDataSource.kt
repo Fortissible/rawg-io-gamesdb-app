@@ -52,7 +52,6 @@ class RemoteDataSource @Inject constructor(
         return flow {
             try {
                 val loginResponse = apiReqresService.login(email,password)
-                Log.d("RESPONSEEE", "loginReqresApi: ${loginResponse.token}")
                 if (loginResponse.token.isNotEmpty())
                     emit(ApiResponse.Success(loginResponse))
                 else

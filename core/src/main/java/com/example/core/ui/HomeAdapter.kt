@@ -1,7 +1,6 @@
 package com.example.core.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,13 +12,11 @@ class HomeAdapter(
     val onClick :(Game) -> Unit
 ):RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-//    var onSetFavourite: ((Game) -> Unit)?= null
 
     class ViewHolder(binding: GamesItemBinding):RecyclerView.ViewHolder(binding.root){
         val imageIv = binding.gamesIv
         val gameNameTv = binding.gameNameTv
         val gameScoreTv = binding.scoreTv
-//        val favouriteBtn = binding.wishlistIv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,10 +44,6 @@ class HomeAdapter(
         holder.itemView.setOnClickListener {
             onClick(game)
         }
-
-//        holder.favouriteBtn.setOnClickListener {
-//            onSetFavourite?.invoke(game)
-//        }
     }
 
     override fun getItemCount(): Int = listGames.size

@@ -1,7 +1,6 @@
 package com.example.rawgamesdb.features.detail
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -61,12 +60,10 @@ class GameDetailFragment : Fragment() {
                 if ( it!= null) {
                     when (it) {
                         is Resource.Loading<*> -> {
-                            Log.d("LOADING DETAIL GAN", "onViewCreated: ")
                             changeUI(isLoading = true, isFavourited = false)
                         }
                         is Resource.Success<*> -> {
                             game = it.data!!
-                            Log.d("SUKSES DETAIL GAN", "onViewCreated: $game")
 
                             setGameDetail(game)
                             if (it.data?.favorite == true) {
@@ -96,7 +93,6 @@ class GameDetailFragment : Fragment() {
                         }
                         is Resource.Error<*> -> {
                             changeUI(isLoading = false, isFavourited = false)
-                            Log.d("ERROR DETAIL GAN", "onViewCreated: ")
                         }
                     }
                 }

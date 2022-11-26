@@ -8,7 +8,7 @@ import com.example.core.domain.model.Game
 
 class AdditionalActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityAdditionalBinding
+    private lateinit var binding : ActivityAdditionalBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

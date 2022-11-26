@@ -1,9 +1,6 @@
 package com.example.rawgamesdb.features.home
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,16 +51,13 @@ class HomeFragment : Fragment() {
                 when (it) {
                     is Resource.Loading<*> -> {
                         showLoading(true)
-                        Log.d("LOADING LIST GAME GAN", "onViewCreated: ")
                     }
                     is Resource.Success<*> -> {
                         showLoading(false)
-                        Log.d("SUKSES LIST GAME GAN", "onViewCreated: ${it.data}")
                         setRvData(view,it.data)
                     }
                     is Resource.Error<*> -> {
                         showLoading(false)
-                        Log.d("ERROR LIST GAME GAN", "onViewCreated: ")
                     }
                 }
             }

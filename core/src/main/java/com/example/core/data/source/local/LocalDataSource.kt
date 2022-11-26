@@ -1,7 +1,6 @@
 package com.example.core.data.source.local
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.core.data.source.local.entity.GameEntity
 import com.example.core.data.source.local.room.GameDao
 import com.example.core.domain.model.LoginToken
@@ -30,21 +29,18 @@ class LocalDataSource @Inject constructor(
     fun getFavouritedGame(id:Int) = gameDao.getFavouritedGame(id)
 
     fun setLoginToken(token:String){
-        Log.d("AAA", "setLoginToken: ")
         val editor = prefs.edit()
         editor.putString(LOGIN_TOKEN,token)
         editor.apply()
     }
 
     fun getLoginToken():Flow<LoginToken> = flow {
-        Log.d("BBB", "getLoginToken: ")
         emit(LoginToken(
             token = prefs.getString(LOGIN_TOKEN,"")
         ))
     }
 
     fun clearLoginToken(){
-        Log.d("CCC", "clearLoginToken: ")
         val editor = prefs.edit()
         editor.clear()
         editor.apply()
