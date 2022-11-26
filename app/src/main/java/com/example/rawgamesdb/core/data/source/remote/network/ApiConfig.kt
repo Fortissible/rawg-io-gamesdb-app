@@ -16,21 +16,21 @@ object ApiConfig {
             .build()
     }
 
-    fun provideRAWGamesApiService(): ApiService {
+    fun provideRAWGamesApiService(): ApiRAWGService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.rawg.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(provideOkHttpClient())
             .build()
-        return retrofit.create(ApiService::class.java)
+        return retrofit.create(ApiRAWGService::class.java)
     }
 
-    fun provideReqresApiService(): ApiService {
+    fun provideReqresApiService(): ApiReqresService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://reqres.in/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(provideOkHttpClient())
             .build()
-        return retrofit.create(ApiService::class.java)
+        return retrofit.create(ApiReqresService::class.java)
     }
 }

@@ -7,26 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rawgamesdb.R
 import com.example.rawgamesdb.core.data.Resource
 import com.example.rawgamesdb.core.domain.model.Game
 import com.example.rawgamesdb.core.ui.HomeAdapter
-import com.example.rawgamesdb.core.ui.ViewModelFactory
 import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentHomeBinding
-import kotlinx.coroutines.launch
+import com.example.rawgamesdb.features.login.LoginFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel : HomeViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val homeViewModel : HomeViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +36,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        homeViewModel.getToken.observe(viewLifecycleOwner){
-            if (it.token.isNullOrEmpty())
-                view.findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-        }
 
         binding.gamesRv.setHasFixedSize(true)
 

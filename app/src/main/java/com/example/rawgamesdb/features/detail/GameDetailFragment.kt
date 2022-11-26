@@ -18,22 +18,21 @@ import com.bumptech.glide.Glide
 import com.example.rawgamesdb.R
 import com.example.rawgamesdb.core.data.Resource
 import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.ui.ViewModelFactory
 import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentGameDetailBinding
 import com.example.rawgamesdb.features.home.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class GameDetailFragment : Fragment() {
 
     private var _binding : FragmentGameDetailBinding ?= null
     private val binding get() = _binding!!
 
-    private val gameDetailViewModel : GameDetailViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val gameDetailViewModel : GameDetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

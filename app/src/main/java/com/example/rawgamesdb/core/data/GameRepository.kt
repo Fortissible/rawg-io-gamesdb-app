@@ -12,22 +12,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class GameRepository private constructor(
+@Singleton
+class GameRepository @Inject constructor(
     private val remoteSource : RemoteDataSource,
     private val localSource : LocalDataSource
 ): IGameRepository{
-    companion object {
-        @Volatile
-        private var instance: GameRepository ?= null
-        fun getInstance(
-            remoteSource:RemoteDataSource,
-            localSource: LocalDataSource
-        ): GameRepository =
-            instance ?: synchronized(this){
-                instance ?: GameRepository(remoteSource,localSource)
-            }
-    }
 
     override fun getAllGameFromApi(key: String): Flow<Resource<List<Game>>> = flow {
         emit(Resource.Loading())
@@ -71,25 +63,6 @@ class GameRepository private constructor(
                 DataMapper.mapGameDetailResponseToDomain(data)
 
         }.asFlow()
-
-//        flow {
-//        emit(Resource.Loading())
-//        when (val response = remoteSource.getGameDetailFromApi(id,key).first()){
-//            is ApiResponse.Empty -> {
-//                Log.d("KOSONG GAN", "onViewCreated: ")
-//                val emptyData = DataMapper.getGameDetailEmpty()
-//                emit(Resource.Success(emptyData))
-//            }
-//            is ApiResponse.Success -> {
-//                val gameDetail = DataMapper.mapGameDetailResponseToDomain(response.data)
-//                emit(Resource.Success(gameDetail))
-//            }
-//            is ApiResponse.Error -> {
-//                Log.d("ERROR GAN", "onViewCreated: ")
-//                emit(Resource.Error(response.errorMessage))
-//            }
-//        }
-//    }
 
     override fun getAllFavouritedGame(): Flow<List<Game>> =
         localSource.getAllFavouritedGame()

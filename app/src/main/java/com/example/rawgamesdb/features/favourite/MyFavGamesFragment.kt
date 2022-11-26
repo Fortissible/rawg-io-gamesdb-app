@@ -9,16 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rawgamesdb.core.ui.FavGamesAdapter
-import com.example.rawgamesdb.core.ui.ViewModelFactory
 import com.example.rawgamesdb.databinding.FragmentMyFavGamesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyFavGamesFragment : Fragment() {
 
     private var _binding : FragmentMyFavGamesBinding ?= null
     private val binding get() = _binding!!
-    private val myFavGamesViewModel : MyFavGamesViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val myFavGamesViewModel : MyFavGamesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

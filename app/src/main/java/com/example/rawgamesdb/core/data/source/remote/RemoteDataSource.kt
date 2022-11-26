@@ -1,8 +1,9 @@
 package com.example.rawgamesdb.core.data.source.remote
 
 import android.util.Log
+import com.example.rawgamesdb.core.data.source.remote.network.ApiRAWGService
+import com.example.rawgamesdb.core.data.source.remote.network.ApiReqresService
 import com.example.rawgamesdb.core.data.source.remote.network.ApiResponse
-import com.example.rawgamesdb.core.data.source.remote.network.ApiService
 import com.example.rawgamesdb.core.data.source.remote.response.GameDetailResponse
 import com.example.rawgamesdb.core.data.source.remote.response.LoginResponse
 import com.example.rawgamesdb.core.data.source.remote.response.ResultsItem
@@ -10,23 +11,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteDataSource private constructor(
-    private val apiService: ApiService
+@Singleton
+class RemoteDataSource @Inject constructor(
+    private val apiRawgService: ApiRAWGService,
+    private val apiReqresService: ApiReqresService
 ){
-    companion object {
-        private var instance: RemoteDataSource ?= null
-
-        fun getInstance(service: ApiService): RemoteDataSource =
-            instance ?: synchronized(this){
-                instance ?: RemoteDataSource(service)
-            }
-    }
 
     suspend fun getAllGameFromApi(key:String) : Flow<ApiResponse<List<ResultsItem>>>{
         return flow {
             try {
-                val response = apiService.getGamesFromApi(key)
+                val response = apiRawgService.getGamesFromApi(key)
                 val gameList = response.results
 
                 if (gameList.isNotEmpty()) emit(ApiResponse.Success(gameList))
@@ -41,7 +38,7 @@ class RemoteDataSource private constructor(
     suspend fun getGameDetailFromApi(id:String,key:String) : Flow<ApiResponse<GameDetailResponse>>{
         return flow {
             try {
-                val gameDetailResponse = apiService.getGameDetailFromApi(id,key)
+                val gameDetailResponse = apiRawgService.getGameDetailFromApi(id,key)
                 if (gameDetailResponse.name.isNotEmpty()) emit(ApiResponse.Success(gameDetailResponse))
                 else emit(ApiResponse.Empty)
             } catch(e:Exception){
@@ -54,7 +51,7 @@ class RemoteDataSource private constructor(
     suspend fun loginReqresApi(email:String, password:String): Flow<ApiResponse<LoginResponse>>{
         return flow {
             try {
-                val loginResponse = apiService.login(email,password)
+                val loginResponse = apiReqresService.login(email,password)
                 Log.d("RESPONSEEE", "loginReqresApi: ${loginResponse.token}")
                 if (loginResponse.token.isNotEmpty())
                     emit(ApiResponse.Success(loginResponse))

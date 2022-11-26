@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiService {
+interface ApiRAWGService {
     @GET("games")
     suspend fun getGamesFromApi(
         @Query("key") key: String
@@ -21,11 +21,4 @@ interface ApiService {
         @Path("id") id: String,
         @Query("key") key: String
     ): GameDetailResponse
-
-    @FormUrlEncoded
-    @POST("login")
-    suspend fun login(
-        @Field("email") email:String,
-        @Field("password") password:String
-    ): LoginResponse
 }

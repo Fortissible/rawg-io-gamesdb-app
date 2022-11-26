@@ -1,6 +1,7 @@
 package com.example.rawgamesdb.features.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +11,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.rawgamesdb.R
 import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.ui.ViewModelFactory
 import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentLoginBinding
+import com.example.rawgamesdb.features.home.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val loginViewModel: LoginViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val loginViewModel: LoginViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +38,7 @@ class LoginFragment : Fragment() {
         binding.passwordEdt.setText(Constant.passwordUser)
 
         loginViewModel.getToken.observe(viewLifecycleOwner){
+            Log.d("TOKEN NOW", "onViewCreated: ${it.token}")
             if (!it.token.isNullOrEmpty())
                 loginUser(view)
         }
@@ -54,8 +56,7 @@ class LoginFragment : Fragment() {
     private fun loginUser(view:View){
         loginViewModel.loginRAWGame(
             binding.emailEdt.text.toString(),
-            binding.passwordEdt.text.toString(),
-            binding.rememberMeCb.isChecked
+            binding.passwordEdt.text.toString()
         ).observe(requireActivity()){
             if (it != null) {
                 when (it) {

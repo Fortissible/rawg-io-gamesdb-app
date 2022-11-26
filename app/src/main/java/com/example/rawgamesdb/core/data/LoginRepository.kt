@@ -7,25 +7,16 @@ import com.example.rawgamesdb.core.data.source.remote.response.LoginResponse
 import com.example.rawgamesdb.core.domain.model.LoginToken
 import com.example.rawgamesdb.core.domain.repository.ILoginRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LoginRepository private constructor(
+@Singleton
+class LoginRepository @Inject constructor(
     private val remoteSource : RemoteDataSource,
     private val localSource : LocalDataSource
 ): ILoginRepository {
-    companion object {
-        @Volatile
-        private var instance: LoginRepository ?= null
-        fun getInstance(
-            remoteSource:RemoteDataSource,
-            localSource: LocalDataSource
-        ): LoginRepository =
-            instance ?: synchronized(this){
-                instance ?: LoginRepository(remoteSource,localSource)
-            }
-    }
 
-    override fun loginAccount(email: String, password: String,isRemembered:Boolean): Flow<Resource<LoginToken>> =
+    override fun loginAccount(email: String, password: String): Flow<Resource<LoginToken>> =
         object : NetworkBoundResource<LoginToken,LoginResponse>(){
             override fun loadFromLocal(): Flow<LoginToken> =
                 localSource.getLoginToken()
@@ -37,7 +28,7 @@ class LoginRepository private constructor(
                 remoteSource.loginReqresApi(email,password)
 
             override suspend fun saveCallResult(data: LoginResponse) {
-                if (isRemembered) localSource.setLoginToken(data.token)
+                localSource.setLoginToken(data.token)
             }
 
             override fun loadFromApi(data: LoginResponse): LoginToken =
