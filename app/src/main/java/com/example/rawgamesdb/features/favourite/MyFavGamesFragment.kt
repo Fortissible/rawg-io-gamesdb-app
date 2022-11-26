@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rawgamesdb.core.ui.FavGamesAdapter
+import com.example.core.ui.FavGamesAdapter
 import com.example.rawgamesdb.databinding.FragmentMyFavGamesBinding
 import dagger.hilt.android.AndroidEntryPoint
 

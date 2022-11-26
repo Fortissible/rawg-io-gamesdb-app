@@ -3,9 +3,9 @@ package com.example.rawgamesdb.features.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.LoginToken
-import com.example.rawgamesdb.core.domain.usecase.LoginUseCase
+import com.example.core.data.Resource
+import com.example.core.domain.model.LoginToken
+import com.example.core.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class LoginViewModel @Inject constructor(
 ): ViewModel() {
 
     val loginRAWGame:(email:String,password:String)
-    -> LiveData<Resource<LoginToken>> = { email,password->
+    -> LiveData<Resource<LoginToken>> = { email, password->
         loginUseCase.loginAccount(email,password).asLiveData()
     }
 

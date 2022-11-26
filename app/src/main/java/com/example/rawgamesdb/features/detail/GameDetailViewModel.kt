@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.domain.usecase.GameUseCase
+import com.example.core.data.Resource
+import com.example.core.domain.model.Game
+import com.example.core.domain.usecase.GameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +17,7 @@ class GameDetailViewModel @Inject constructor(
 ): ViewModel() {
 
     val getGameDetail : (id:String, key:String)
-    -> LiveData<Resource<Game>> = { id,key ->
+    -> LiveData<Resource<Game>> = { id, key ->
        gameUseCase.getGameDetail(id,key).asLiveData()
     }
 

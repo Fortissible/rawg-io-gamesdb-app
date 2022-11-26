@@ -1,9 +1,9 @@
 package com.example.rawgamesdb.features.di
 
-import com.example.rawgamesdb.core.domain.usecase.GameInteractor
-import com.example.rawgamesdb.core.domain.usecase.GameUseCase
-import com.example.rawgamesdb.core.domain.usecase.LoginInteractor
-import com.example.rawgamesdb.core.domain.usecase.LoginUseCase
+import com.example.core.domain.usecase.GameInteractor
+import com.example.core.domain.usecase.GameUseCase
+import com.example.core.domain.usecase.LoginInteractor
+import com.example.core.domain.usecase.LoginUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

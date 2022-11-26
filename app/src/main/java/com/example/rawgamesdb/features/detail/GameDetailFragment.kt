@@ -1,5 +1,7 @@
 package com.example.rawgamesdb.features.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,10 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.example.core.data.Resource
+import com.example.core.domain.model.Game
+import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentGameDetailBinding
 import com.example.rawgamesdb.features.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +33,7 @@ class GameDetailFragment : Fragment() {
 
     private var _binding : FragmentGameDetailBinding ?= null
     private val binding get() = _binding!!
-
+    private lateinit var game : Game
     private val gameDetailViewModel : GameDetailViewModel by viewModels()
 
     override fun onCreateView(
@@ -48,27 +50,34 @@ class GameDetailFragment : Fragment() {
 
         val gameId = arguments?.getInt(HomeFragment.EXTRA_ID) ?: 0
 
-        gameDetailViewModel.getGameDetail(gameId.toString(),Constant.tokenRAWGamesApi)
+        binding.additionalBtn.setOnClickListener{
+            val intent = Intent(requireActivity(), Class.forName("com.example.additional.AdditionalActivity"))
+            intent.putExtra("additional_game",game)
+            startActivity(intent)
+        }
+
+        gameDetailViewModel.getGameDetail(gameId.toString(), Constant.tokenRAWGamesApi)
             .observe(viewLifecycleOwner){
                 if ( it!= null) {
                     when (it) {
-                        is Resource.Loading -> {
+                        is Resource.Loading<*> -> {
                             Log.d("LOADING DETAIL GAN", "onViewCreated: ")
                             changeUI(isLoading = true, isFavourited = false)
                         }
-                        is Resource.Success -> {
-                            Log.d("SUKSES DETAIL GAN", "onViewCreated: ${it.data}")
+                        is Resource.Success<*> -> {
+                            game = it.data!!
+                            Log.d("SUKSES DETAIL GAN", "onViewCreated: $game")
 
-                            setGameDetail(it.data)
+                            setGameDetail(game)
                             if (it.data?.favorite == true) {
                                 changeUI(isLoading = false, isFavourited = true)
                                 binding.wishlistBtn.setOnClickListener { view ->
                                     val gameDeletedText =
                                         StringBuilder(
-                                            "Deleted ${it.data.name} from favourite list")
+                                            "Deleted ${game.name} from favourite list")
                                             .toString()
                                     clickAction(
-                                        view,gameDeletedText,it.data
+                                        view,gameDeletedText,game
                                     )
                                 }
 
@@ -77,15 +86,15 @@ class GameDetailFragment : Fragment() {
                                 binding.wishlistBtn.setOnClickListener { view ->
                                     val gameAddedText =
                                         StringBuilder(
-                                            "Added ${it.data!!.name} to favourite list")
+                                            "Added ${game.name} to favourite list")
                                             .toString()
                                     clickAction(
-                                        view,gameAddedText,it.data
+                                        view,gameAddedText, game
                                     )
                                 }
                             }
                         }
-                        is Resource.Error -> {
+                        is Resource.Error<*> -> {
                             changeUI(isLoading = false, isFavourited = false)
                             Log.d("ERROR DETAIL GAN", "onViewCreated: ")
                         }

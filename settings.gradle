@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "RAWGamesDB"
 include ':app'
 include ':core'
+include ':dynamicfeature'
+include ':additional'

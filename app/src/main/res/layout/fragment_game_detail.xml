@@ -156,6 +156,18 @@
                 tools:text="@string/desc_dummy"/>
 
             <Button
+                android:id="@+id/additional_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:backgroundTint="@color/steam_text_button"
+                android:text="SEE GAME ADDITIONALS"
+                android:layout_gravity="center"
+                />
+
+            <Button
                 android:id="@+id/wishlist_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

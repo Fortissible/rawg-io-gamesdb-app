@@ -1,5 +1,7 @@
 package com.example.rawgamesdb.features.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,13 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.core.data.Resource
+import com.example.core.domain.model.Game
+import com.example.core.ui.HomeAdapter
+import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.ui.HomeAdapter
-import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentHomeBinding
-import com.example.rawgamesdb.features.login.LoginFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,16 +52,16 @@ class HomeFragment : Fragment() {
         homeViewModel.getAllGameFromApi(Constant.tokenRAWGamesApi).observe(viewLifecycleOwner){
             if ( it!= null) {
                 when (it) {
-                    is Resource.Loading -> {
+                    is Resource.Loading<*> -> {
                         showLoading(true)
                         Log.d("LOADING LIST GAME GAN", "onViewCreated: ")
                     }
-                    is Resource.Success -> {
+                    is Resource.Success<*> -> {
                         showLoading(false)
                         Log.d("SUKSES LIST GAME GAN", "onViewCreated: ${it.data}")
                         setRvData(view,it.data)
                     }
-                    is Resource.Error -> {
+                    is Resource.Error<*> -> {
                         showLoading(false)
                         Log.d("ERROR LIST GAME GAN", "onViewCreated: ")
                     }
@@ -77,11 +78,6 @@ class HomeFragment : Fragment() {
                 mBundle.putInt(EXTRA_ID, it.id!!)
                 view.findNavController().navigate(R.id.action_homeFragment_to_gameDetailFragment,mBundle)
             }
-//            rvAdapter.onSetFavourite = {
-//                lifecycleScope.launch {
-//                    homeViewModel.updateFavouriteGame(it,it.favorite)
-//                }
-//            }
             binding.gamesRv.adapter = rvAdapter
         }
     }
