@@ -1,20 +1,14 @@
-package com.example.rawgamesdb.features.favourite
+package com.example.additional
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.model.Game
 import com.example.core.domain.usecase.GameUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MyFavGamesViewModel @Inject constructor(
-    gameUseCase: GameUseCase
-):ViewModel() {
-
-    val allFavouritedGame = gameUseCase.getAllFavouritedGame().asLiveData()
+class FavViewModel(gameUseCase: GameUseCase):ViewModel() {
+    val favouritedGame = gameUseCase.getAllFavouritedGame().asLiveData()
 
     val updateFavouriteGame: (game: Game, isFavourited: Boolean) -> Unit = { game, isFavourited ->
         viewModelScope.launch {

@@ -12,7 +12,6 @@ class HomeAdapter(
     val onClick :(Game) -> Unit
 ):RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-
     class ViewHolder(binding: GamesItemBinding):RecyclerView.ViewHolder(binding.root){
         val imageIv = binding.gamesIv
         val gameNameTv = binding.gameNameTv

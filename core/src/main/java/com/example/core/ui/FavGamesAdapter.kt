@@ -9,6 +9,7 @@ import com.example.core.domain.model.Game
 
 class FavGamesAdapter(
     private val gameList:List<Game>,
+    val moveToDetail:(Game) -> Unit ,
     val removeFavourite:(Game) -> Unit
 ):RecyclerView.Adapter<FavGamesAdapter.ViewHolder>(){
 
@@ -38,6 +39,10 @@ class FavGamesAdapter(
             .append(game.ratingTop)
 
         holder.gameNameTv.text = game.name
+
+        holder.itemView.setOnClickListener {
+            moveToDetail(game)
+        }
 
         holder.gameFavIv.setOnClickListener {
             removeFavourite(game)

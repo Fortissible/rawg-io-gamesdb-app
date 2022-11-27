@@ -1,5 +1,6 @@
 package com.example.rawgamesdb.features.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.core.ui.HomeAdapter
 import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
 import com.example.rawgamesdb.databinding.FragmentHomeBinding
+import com.example.rawgamesdb.features.detail.GameDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +40,11 @@ class HomeFragment : Fragment() {
         binding.gamesRv.setHasFixedSize(true)
 
         binding.gotoFavActionBtn.setOnClickListener {
-            view.findNavController().navigate(R.id.action_homeFragment_to_myFavGamesFragment)
+            val intent = Intent(
+                requireActivity(),
+                Class.forName("com.example.additional.FavouriteActivity")
+            )
+            startActivity(intent)
         }
 
         binding.logoutBtn.setOnClickListener {
@@ -54,7 +60,7 @@ class HomeFragment : Fragment() {
                     }
                     is Resource.Success<*> -> {
                         showLoading(false)
-                        setRvData(view,it.data)
+                        setRvData(it.data)
                     }
                     is Resource.Error<*> -> {
                         showLoading(false)
@@ -64,13 +70,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setRvData(view:View,gameList: List<Game>?){
+    private fun setRvData(gameList: List<Game>?){
         binding.gamesRv.layoutManager = GridLayoutManager(requireActivity(),2)
         if (!gameList.isNullOrEmpty()){
             val rvAdapter = HomeAdapter(gameList) {
-                val mBundle = Bundle()
-                mBundle.putInt(EXTRA_ID, it.id!!)
-                view.findNavController().navigate(R.id.action_homeFragment_to_gameDetailFragment,mBundle)
+                val intent = Intent(requireActivity(),GameDetailActivity::class.java)
+                intent.putExtra(EXTRA_ID,it.id)
+                startActivity(intent)
             }
             binding.gamesRv.adapter = rvAdapter
         }

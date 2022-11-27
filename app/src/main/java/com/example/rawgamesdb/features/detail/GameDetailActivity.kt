@@ -4,15 +4,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -20,7 +18,7 @@ import com.example.core.data.Resource
 import com.example.core.domain.model.Game
 import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
-import com.example.rawgamesdb.databinding.FragmentGameDetailBinding
+import com.example.rawgamesdb.databinding.ActivityGameDetailBinding
 import com.example.rawgamesdb.features.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,35 +26,33 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class GameDetailFragment : Fragment() {
+class GameDetailActivity : AppCompatActivity() {
 
-    private var _binding : FragmentGameDetailBinding ?= null
-    private val binding get() = _binding!!
     private lateinit var game : Game
     private val gameDetailViewModel : GameDetailViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGameDetailBinding.inflate(inflater,container,false)
-        return binding.root
-    }
+    private lateinit var binding: ActivityGameDetailBinding
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
 
-        val gameId = arguments?.getInt(HomeFragment.EXTRA_ID) ?: 0
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityGameDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val gameId = intent.getIntExtra(HomeFragment.EXTRA_ID,0)
 
         binding.additionalBtn.setOnClickListener{
-            val intent = Intent(requireActivity(), Class.forName("com.example.additional.AdditionalActivity"))
+            val intent = Intent(
+                this,
+                Class.forName("com.example.additional.AdditionalActivity")
+            )
             intent.putExtra("additional_game",game)
             startActivity(intent)
         }
 
         gameDetailViewModel.getGameDetail(gameId.toString(), Constant.tokenRAWGamesApi)
-            .observe(viewLifecycleOwner){
+            .observe(this){
                 if ( it!= null) {
                     when (it) {
                         is Resource.Loading<*> -> {
@@ -74,7 +70,7 @@ class GameDetailFragment : Fragment() {
                                             "Deleted ${game.name} from favourite list")
                                             .toString()
                                     clickAction(
-                                        view,gameDeletedText,game
+                                        gameDeletedText,game
                                     )
                                 }
 
@@ -86,7 +82,7 @@ class GameDetailFragment : Fragment() {
                                             "Added ${game.name} to favourite list")
                                             .toString()
                                     clickAction(
-                                        view,gameAddedText, game
+                                        gameAddedText, game
                                     )
                                 }
                             }
@@ -96,7 +92,7 @@ class GameDetailFragment : Fragment() {
                         }
                     }
                 }
-        }
+            }
     }
 
     private fun changeUI(isLoading:Boolean,isFavourited:Boolean){
@@ -113,21 +109,21 @@ class GameDetailFragment : Fragment() {
                     .toString()
                 binding.wishlistBtn.backgroundTintList =
                     AppCompatResources.getColorStateList(
-                        requireActivity(),R.color.steam_text_primary
+                        this,R.color.steam_text_primary
                     )
             }
         }
     }
 
-    private fun clickAction(view:View,text:String,game: Game){
+    private fun clickAction(text:String,game: Game){
         lifecycleScope.launch {
             gameDetailViewModel.updateFavouriteGame(game,game.favorite)
         }
         Toast.makeText(
-            requireActivity(),
+            this,
             text,
             Toast.LENGTH_SHORT).show()
-        view.findNavController().navigate(R.id.action_gameDetailFragment_to_homeFragment)
+        onBackPressed()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

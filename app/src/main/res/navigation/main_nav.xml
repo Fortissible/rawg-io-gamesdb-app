@@ -20,30 +20,17 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_gameDetailFragment"
-            app:destination="@id/gameDetailFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_myFavGamesFragment"
-            app:destination="@id/myFavGamesFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/gameDetailFragment"
-        android:name="com.example.rawgamesdb.features.detail.GameDetailFragment"
-        android:label="fragment_game_detail"
-        tools:layout="@layout/fragment_game_detail" >
         <action
-            android:id="@+id/action_gameDetailFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="false" />
+            android:id="@+id/action_homeFragment_to_gameDetailActivity"
+            app:destination="@id/gameDetailActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/myFavGamesFragment"
-        android:name="com.example.rawgamesdb.features.favourite.MyFavGamesFragment"
-        android:label="fragment_my_fav_games"
-        tools:layout="@layout/fragment_my_fav_games" />
+    <activity
+        android:id="@+id/gameDetailActivity"
+        android:name="com.example.rawgamesdb.features.detail.GameDetailActivity"
+        android:label="activity_game_detail"
+        tools:layout="@layout/activity_game_detail">
+    </activity>
 </navigation>

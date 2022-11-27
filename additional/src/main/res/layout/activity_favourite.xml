@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/steam_dark_primary"
-    tools:context=".features.favourite.MyFavGamesFragment">
+    tools:context=".FavouriteActivity">
 
     <LinearLayout
         android:id="@+id/title_container"
@@ -50,7 +50,6 @@
             android:id="@+id/games_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/favourite_item"
             android:layout_gravity="top"/>
 
     </ScrollView>

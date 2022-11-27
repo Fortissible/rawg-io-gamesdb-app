@@ -2,6 +2,7 @@ package com.example.core.domain.usecase
 
 import com.example.core.data.Resource
 import com.example.core.domain.model.Game
+import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 
 interface GameUseCase {
