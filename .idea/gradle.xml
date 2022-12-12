@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/additional" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/dynamicfeature" />
           </set>
         </option>
       </GradleProjectSettings>
