@@ -8,20 +8,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.example.core.data.Resource
+import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.ui.ViewModelFactory
-import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val loginViewModel: LoginViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val loginViewModel: LoginViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,21 +53,20 @@ class LoginFragment : Fragment() {
     private fun loginUser(view:View){
         loginViewModel.loginRAWGame(
             binding.emailEdt.text.toString(),
-            binding.passwordEdt.text.toString(),
-            binding.rememberMeCb.isChecked
+            binding.passwordEdt.text.toString()
         ).observe(requireActivity()){
             if (it != null) {
                 when (it) {
-                    is Resource.Loading -> {
+                    is Resource.Loading<*> -> {
                         showLoading()
                     }
-                    is Resource.Success -> {
+                    is Resource.Success<*>-> {
                         hideLoading()
                         view.findNavController().navigate(
                             R.id.action_loginFragment_to_homeFragment
                         )
                     }
-                    is Resource.Error -> {
+                    is Resource.Error<*> -> {
                         hideLoading()
                         Toast.makeText(
                             requireActivity(),

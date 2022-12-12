@@ -1,32 +1,30 @@
 package com.example.rawgamesdb.features.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.core.data.Resource
+import com.example.core.domain.model.Game
+import com.example.core.ui.HomeAdapter
+import com.example.core.utils.Constant
 import com.example.rawgamesdb.R
-import com.example.rawgamesdb.core.data.Resource
-import com.example.rawgamesdb.core.domain.model.Game
-import com.example.rawgamesdb.core.ui.HomeAdapter
-import com.example.rawgamesdb.core.ui.ViewModelFactory
-import com.example.rawgamesdb.core.utils.Constant
 import com.example.rawgamesdb.databinding.FragmentHomeBinding
-import kotlinx.coroutines.launch
+import com.example.rawgamesdb.features.detail.GameDetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel : HomeViewModel by viewModels {
-        ViewModelFactory.getInstance(requireActivity())
-    }
+    private val homeViewModel : HomeViewModel by viewModels ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,15 +37,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel.getToken.observe(viewLifecycleOwner){
-            if (it.token.isNullOrEmpty())
-                view.findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-        }
-
         binding.gamesRv.setHasFixedSize(true)
 
         binding.gotoFavActionBtn.setOnClickListener {
-            view.findNavController().navigate(R.id.action_homeFragment_to_myFavGamesFragment)
+            val intent = Intent(
+                requireActivity(),
+                Class.forName("com.example.additional.FavouriteActivity")
+            )
+            startActivity(intent)
         }
 
         binding.logoutBtn.setOnClickListener {
@@ -58,37 +55,29 @@ class HomeFragment : Fragment() {
         homeViewModel.getAllGameFromApi(Constant.tokenRAWGamesApi).observe(viewLifecycleOwner){
             if ( it!= null) {
                 when (it) {
-                    is Resource.Loading -> {
+                    is Resource.Loading<*> -> {
                         showLoading(true)
-                        Log.d("LOADING LIST GAME GAN", "onViewCreated: ")
                     }
-                    is Resource.Success -> {
+                    is Resource.Success<*> -> {
                         showLoading(false)
-                        Log.d("SUKSES LIST GAME GAN", "onViewCreated: ${it.data}")
-                        setRvData(view,it.data)
+                        setRvData(it.data)
                     }
-                    is Resource.Error -> {
+                    is Resource.Error<*> -> {
                         showLoading(false)
-                        Log.d("ERROR LIST GAME GAN", "onViewCreated: ")
                     }
                 }
             }
         }
     }
 
-    private fun setRvData(view:View,gameList: List<Game>?){
+    private fun setRvData(gameList: List<Game>?){
         binding.gamesRv.layoutManager = GridLayoutManager(requireActivity(),2)
         if (!gameList.isNullOrEmpty()){
-            val rvAdapter = HomeAdapter(gameList) {
-                val mBundle = Bundle()
-                mBundle.putInt(EXTRA_ID, it.id!!)
-                view.findNavController().navigate(R.id.action_homeFragment_to_gameDetailFragment,mBundle)
-            }
-//            rvAdapter.onSetFavourite = {
-//                lifecycleScope.launch {
-//                    homeViewModel.updateFavouriteGame(it,it.favorite)
-//                }
-//            }
+            val rvAdapter = HomeAdapter(gameList, onClick = {
+                val intent = Intent(requireActivity(),GameDetailActivity::class.java)
+                intent.putExtra(EXTRA_ID,it.id)
+                startActivity(intent)
+            })
             binding.gamesRv.adapter = rvAdapter
         }
     }

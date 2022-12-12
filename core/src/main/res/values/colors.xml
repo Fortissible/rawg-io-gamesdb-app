@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="steam_text_highlight">#66c0f4</color>
+    <color name="steam_text_button">#286ec9</color>
+    <color name="steam_text_primary">#c7d5e0</color>
+    <color name="steam_dark_primary">#171a21</color>
+    <color name="steam_segment_background">#2a475e</color>
+    <color name="steam_card_color">#1b2838</color>
+</resources>
