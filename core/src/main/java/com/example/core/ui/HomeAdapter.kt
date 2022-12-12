@@ -9,7 +9,7 @@ import com.example.core.domain.model.Game
 
 class HomeAdapter(
     private val listGames:List<Game>,
-    val onClick :(Game) -> Unit
+    val onClick :(Game) -> Unit,
 ):RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     class ViewHolder(binding: GamesItemBinding):RecyclerView.ViewHolder(binding.root){

@@ -7,4 +7,5 @@
     <string name="desc_html_format_text"><![CDATA[ %1$s ]]></string>
     <string name="title_dynamicfeature">NotSoImportantFeature</string>
     <string name="title_additional">Additional</string>
+    <string name="additional_game_detail_image">additional game detail image</string>
 </resources>

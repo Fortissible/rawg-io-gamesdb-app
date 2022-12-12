@@ -64,7 +64,7 @@ class GameDetailActivity : AppCompatActivity() {
                             setGameDetail(game)
                             if (it.data?.favorite == true) {
                                 changeUI(isLoading = false, isFavourited = true)
-                                binding.wishlistBtn.setOnClickListener { view ->
+                                binding.wishlistBtn.setOnClickListener { _ ->
                                     val gameDeletedText =
                                         StringBuilder(
                                             "Deleted ${game.name} from favourite list")
@@ -76,7 +76,7 @@ class GameDetailActivity : AppCompatActivity() {
 
                             } else {
                                 changeUI(isLoading = false, isFavourited = false)
-                                binding.wishlistBtn.setOnClickListener { view ->
+                                binding.wishlistBtn.setOnClickListener { _ ->
                                     val gameAddedText =
                                         StringBuilder(
                                             "Added ${game.name} to favourite list")

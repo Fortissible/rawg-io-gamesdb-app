@@ -13,6 +13,7 @@
     </dist:module>
 
     <application>
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name=".AdditionalActivity"
             android:exported="false" >

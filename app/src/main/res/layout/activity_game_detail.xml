@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 tools:src="@tools:sample/backgrounds/scenic"
-                />
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/detail_game_name_tv"

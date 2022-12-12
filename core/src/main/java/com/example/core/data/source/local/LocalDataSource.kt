@@ -35,9 +35,9 @@ class LocalDataSource @Inject constructor(
     }
 
     fun getLoginToken():Flow<LoginToken> = flow {
-        emit(LoginToken(
-            token = prefs.getString(LOGIN_TOKEN,"")
-        ))
+        emit(
+            LoginToken(token = prefs.getString(LOGIN_TOKEN,""))
+        )
     }
 
     fun clearLoginToken(){

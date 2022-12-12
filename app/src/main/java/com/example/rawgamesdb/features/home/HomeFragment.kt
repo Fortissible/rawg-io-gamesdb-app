@@ -73,11 +73,11 @@ class HomeFragment : Fragment() {
     private fun setRvData(gameList: List<Game>?){
         binding.gamesRv.layoutManager = GridLayoutManager(requireActivity(),2)
         if (!gameList.isNullOrEmpty()){
-            val rvAdapter = HomeAdapter(gameList) {
+            val rvAdapter = HomeAdapter(gameList, onClick = {
                 val intent = Intent(requireActivity(),GameDetailActivity::class.java)
                 intent.putExtra(EXTRA_ID,it.id)
                 startActivity(intent)
-            }
+            })
             binding.gamesRv.adapter = rvAdapter
         }
     }
