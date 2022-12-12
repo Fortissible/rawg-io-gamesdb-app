@@ -35,3 +35,6 @@ jobs:
       - store_artifacts:  
           path: app/build/outputs/apk/debug/
           destination: artifact-file
+      - run:
+          name: Coverage report to CodeCov.io
+          command: bash <(curl -s https://codecov.io/bash)
